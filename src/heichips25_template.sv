@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Adapted from the Tiny Tapeout template
-
+`include "./heichips25_systolicArray.sv"
 `default_nettype none
 
 module heichips25_template (
@@ -17,22 +17,22 @@ module heichips25_template (
 );
 
     // List all unused inputs to prevent warnings
-    wire _unused = &{ena, ui_in[7:1], uio_in[7:0]};
-
-    logic [7:0] count;
-
-    always_ff @(posedge clk) begin
-        if (!rst_n) begin
-            count <= '0;
-        end else begin
-            if (ui_in[0]) begin
-                count <= count + 1;
-            end
-        end
-    end
-    
-    assign uo_out  = count;
-    assign uio_out = count;
-    assign uio_oe  = '1;
+    wire _unused = &{ena, ui_in[7], uio_in[7:0]};
+ 
+heichips25_systolicArray #(
+    .BITWIDTH(4),
+    .OUTWIDTH(8)
+)mydesign(
+    .clk(clk),
+    .reset(!rst_n),
+    .data_in(ui_in[3:0]),
+    .load_weights(ui_in[4]),
+    .load_inputs(ui_in[5]),
+    .store_outputs(ui_in[6]),
+    .results(uo_out),
+    .valid_out(uio_out[0])
+);
+    assign uio_out[7:1] = '0;
+    assign uio_oe       = '1;
 
 endmodule

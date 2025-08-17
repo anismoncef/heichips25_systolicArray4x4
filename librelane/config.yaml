@@ -26,5 +26,6 @@ FP_DEF_TEMPLATE: dir::def/heichips25_template_small.def
 PDN_MULTILAYER: false
 RT_MAX_LAYER: TopMetal1
 
+#FP_PDN_CORE_RING: true
 # Enable for better SystemVerilog support
-#USE_SLANG: true
+USE_SLANG: true
